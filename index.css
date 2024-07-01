@@ -1,0 +1,31 @@
+.slot-machine {
+  width: 100px;
+  height: 90px;
+  margin: 200px auto;
+  display: flex;
+  justify-content: center;
+  border: 5px solid black;
+  overflow: hidden;
+  position: relative;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  /* animation: slide 2s linear 0s infinite; */
+}
+
+.box span {
+  font-size: 64px;
+}
+
+@keyframes slide {
+  from {
+    top: 0%
+  }
+
+  to {
+    top: 100%;
+  }
+}
