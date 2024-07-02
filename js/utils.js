@@ -1,8 +1,8 @@
-const IMAGE_COUNT = 6;
+const IMAGE_COUNT = 6; // Count of the images in the assets directory
 const DEFAULT_Y_POSITION = 50; // Default Y Position of slot images in percentage.
 
 /**
- * Renders the slot machine's current image.
+ * Renders the slot display's current image.
  * @param {HTMLElement} parent The element where the image is appended.
  * @param {number} imageIndex The image's file path (ie. `./assets/img${imageIndex}.webp`).
  * @param {number} yPosition The image's top value in percentage.
@@ -17,8 +17,17 @@ const renderImage = (parent, imageIndex = 0, yPosition = DEFAULT_Y_POSITION) => 
   parent.appendChild(image);
 }
 
+/**
+ * Returns a random number between 0 (inclusive) and the 'limit' (exclusive).
+ * @param {number} limit Upper number limit.
+ */
+const getRandom = (limit) => {
+  return Math.floor(Math.random() * limit);
+}
+
 export {
   IMAGE_COUNT,
   DEFAULT_Y_POSITION,
   renderImage,
+  getRandom,
 }

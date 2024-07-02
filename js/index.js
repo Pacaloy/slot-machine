@@ -1,4 +1,9 @@
-import { IMAGE_COUNT, DEFAULT_Y_POSITION, renderImage } from './utils.js';
+import {
+  IMAGE_COUNT,
+  DEFAULT_Y_POSITION,
+  renderImage,
+  getRandom,
+} from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const displays = document.getElementsByClassName('display');
@@ -6,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initialize(displays);
   spinButton.onclick = () => spin(displays);
+  spin(displays, true);
 });
 
 function initialize(displays) {
@@ -14,11 +20,16 @@ function initialize(displays) {
   }
 }
 
-function spin(displays) {
-  const results = [];
+function spin(displays, isWelcomeSpin = false) {
+  let isWinner = Math.random() < 0.3;
+  const winnerNumber = getRandom(IMAGE_COUNT);
+  let results = [];
 
   for (let i = 0, delay = 0; i < displays.length; i++, delay += 200) {
-    results.push(Math.floor(Math.random() * IMAGE_COUNT));
+    results.push(isWinner ? winnerNumber : getRandom(IMAGE_COUNT));
+
+    if (isWelcomeSpin) results = [0, 0, 0];
+
     const currentImage = displays[i].getElementsByTagName('img');
     const interval = 5;
     let spinTimeout = interval;
@@ -41,12 +52,16 @@ function spin(displays) {
           renderImage(displays[i], imageIndex, yPosition);
         }
 
-        if (spinTimeout > (1000 * (i + 1)) && results[i] === imageIndex && yPosition >= DEFAULT_Y_POSITION) {
+        if (
+          spinTimeout > (1000 * (i + 1))
+          && results[i] === imageIndex
+          && yPosition >= DEFAULT_Y_POSITION
+        ) {
           currentImage[0].style.top = DEFAULT_Y_POSITION + '%';
           clearInterval(intervalId);
         }
       }, interval)
-    }, delay)
+    }, isWelcomeSpin ? 0 : delay)
   }
   console.log(results)
 }
