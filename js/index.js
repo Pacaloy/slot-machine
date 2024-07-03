@@ -1,4 +1,5 @@
 import {
+  DISPLAY_COUNT,
   IMAGE_COUNT,
   DEFAULT_Y_POSITION,
   renderImage,
@@ -6,21 +7,39 @@ import {
 } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const displays = document.getElementsByClassName('display');
+  const displays = getDisplays(DISPLAY_COUNT);
   const spinButton = document.getElementById('spin-button');
 
-  initialize(displays);
+  initializeImages(displays);
   spinButton.onclick = () => spin(displays);
   spin(displays, true);
 });
 
-function initialize(displays) {
+function getDisplays(displayCount) {
+  const slotMachine = document.getElementById('slot-machine');
+
+  for (let i = 0; i < displayCount; i++) {
+    const display = document.createElement('div');
+    display.className = 'display';
+    slotMachine.appendChild(display);
+  }
+
+  return document.getElementsByClassName('display');
+}
+
+function initializeImages(displays) {
   for (let i = 0; i < displays.length; i++) {
-    renderImage(displays[i])
+    renderImage(displays[i]);
   }
 }
 
 function spin(displays, isWelcomeSpin = false) {
+  const slotMachine = document.getElementById('slot-machine');
+  const spinButton = document.getElementById('spin-button');
+
+  slotMachine.classList.remove('slot-machine--win-state')
+  spinButton.setAttribute('disabled', true);
+
   let isWinner = Math.random() < 0.3;
   const winnerNumber = getRandom(IMAGE_COUNT);
   let results = [];
@@ -28,7 +47,7 @@ function spin(displays, isWelcomeSpin = false) {
   for (let i = 0, delay = 0; i < displays.length; i++, delay += 200) {
     results.push(isWinner ? winnerNumber : getRandom(IMAGE_COUNT));
 
-    if (isWelcomeSpin) results = [0, 0, 0];
+    if (isWelcomeSpin) results = Array(displays.length).fill(0);
 
     const currentImage = displays[i].getElementsByTagName('img');
     const interval = 5;
@@ -59,9 +78,14 @@ function spin(displays, isWelcomeSpin = false) {
         ) {
           currentImage[0].style.top = DEFAULT_Y_POSITION + '%';
           clearInterval(intervalId);
+
+          if (i === displays.length - 1) {
+            spinButton.removeAttribute('disabled');
+
+            if (results.every(element => element === results[0])) slotMachine.classList.add('slot-machine--win-state');
+          }
         }
-      }, interval)
-    }, isWelcomeSpin ? 0 : delay)
+      }, interval);
+    }, isWelcomeSpin ? 0 : delay);
   }
-  console.log(results)
 }

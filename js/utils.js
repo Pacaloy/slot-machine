@@ -1,3 +1,4 @@
+const DISPLAY_COUNT = 3; // Count of the slot machine's display
 const IMAGE_COUNT = 6; // Count of the images in the assets directory
 const DEFAULT_Y_POSITION = 50; // Default Y Position of slot images in percentage.
 
@@ -26,6 +27,7 @@ const getRandom = (limit) => {
 }
 
 export {
+  DISPLAY_COUNT,
   IMAGE_COUNT,
   DEFAULT_Y_POSITION,
   renderImage,
