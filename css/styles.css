@@ -83,7 +83,7 @@ body {
   }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 768px) {
   .display {
     width: 5.5rem;
     height: 12rem;
@@ -92,5 +92,11 @@ body {
   .display img {
     max-width: 4rem;
     max-height: 6rem;
+  }
+
+  #spin-button {
+    width: 6.25rem;
+    height: 3rem;
+    font-size: 1.5rem;
   }
 }
